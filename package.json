@@ -1,0 +1,19 @@
+{
+  "name": "canvas-draw",
+  "version": "1.0.0",
+  "description": "canvas drawing test",
+  "main": "draw.js",
+  "scripts": {
+    "test": "echo \"No tests, plz make some\" && exit 1",
+    "build": "webpack",
+    "watch": "webpack --watch"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "ts-loader": "^5.3.1",
+    "webpack": "^4.27.1",
+    "webpack-cli": "^3.1.2"
+  },
+  "dependencies": {}
+}
