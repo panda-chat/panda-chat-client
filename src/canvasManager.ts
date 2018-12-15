@@ -1,16 +1,19 @@
-import { LogManager } from "./logManager"
+import { LogManager, ILogManager } from "./logManager"
 
 const WIDTH: string = "600px"
 const HEIGHT: string = "600px"
+const STROKE_COLOR: string = "#DF4B26"
+const STROKE_JOIN: CanvasLineJoin = "round"
+const STROKE_WIDTH: number = 5
 
 export class CanvasManager implements ICanvasManager {
-    private canvas: CanvasRenderingContext2D
-    private _logManager: LogManager
+    private _canvasContext: CanvasRenderingContext2D
+    private _logManager: ILogManager
     private _document: Document
-    private clickX: number[] = new Array()
-    private clickY: number[] = new Array()
-    private clickDrag: boolean[] = new Array()
-    private painting: boolean
+    private _clickX: number[] = new Array()
+    private _clickY: number[] = new Array()
+    private _clickDrag: boolean[] = new Array()
+    private _painting: boolean
 
     constructor() {
         this._logManager = new LogManager
@@ -34,13 +37,30 @@ export class CanvasManager implements ICanvasManager {
         canvasElement.setAttribute('height', height ? height : HEIGHT)
         canvasDiv.appendChild(canvasElement)
 
-        this.canvas = canvasElement.getContext("2d")
+        this._canvasContext = canvasElement.getContext("2d")
+        this._canvasContext.strokeStyle = STROKE_COLOR
+        this._canvasContext.lineJoin = STROKE_JOIN
+        this._canvasContext.lineWidth = STROKE_WIDTH
+
         this.addEventListeners(canvasDiv)
         return canvasElement
     }
 
     public getCanvas() {
-        return this.canvas
+        return this._canvasContext
+    }
+
+    public setStrokeSize(size: number): void {
+        this._canvasContext.lineWidth = size
+    }
+
+    //todo: stroke style can take more than a color
+    public setStrokeStyle(color: string): void {
+        this._canvasContext.strokeStyle = color
+    }
+
+    public setStrokeJoinShape(canvasLineJoin: CanvasLineJoin): void {
+        this._canvasContext.lineJoin = canvasLineJoin
     }
 
     private addEventListeners(canvasDiv:HTMLElement) {
@@ -49,56 +69,55 @@ export class CanvasManager implements ICanvasManager {
             var mouseX = ev.pageX - canvasDiv.offsetLeft
             var mouseY = ev.pageY - canvasDiv.offsetTop
                   
-            this.painting = true;
+            this._painting = true;
             this.addClick(mouseX, mouseY)
             this.redraw()
         })
 
         canvasDiv.addEventListener('mouseleave', (ev) => {
-            this.painting = false
+            this._painting = false
         })
 
         canvasDiv.addEventListener('mouseup', (ev) => {
-            this.painting = false
+            this._painting = false
         })
 
         canvasDiv.addEventListener('mousemove', (ev) => {
-            if(this.painting) {
-                this.addClick(ev.pageX - canvasDiv.offsetLeft, ev.pageY - canvasDiv.offsetTop, true);
-                this.redraw();
+            if(this._painting) {
+                this.addClick(ev.pageX - canvasDiv.offsetLeft, ev.pageY - canvasDiv.offsetTop, true)
+                this.redraw()
             }
         })
     }
 
     private addClick(x: number, y: number, dragging?: boolean) {
-        this.clickX.push(x);
-        this.clickY.push(y);
-        this.clickDrag.push(dragging ? true : false)
+        this._clickX.push(x)
+        this._clickY.push(y)
+        this._clickDrag.push(dragging ? true : false)
     }
 
+    //todo what do we need to redraw for? Examples show this but its currently working without this. Doin me a confuse
     private redraw(){
-        let context = this.canvas
-        context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+        //this._canvasContext.clearRect(0, 0, this._canvasContext.canvas.width, this._canvasContext.canvas.height)
         
-        context.strokeStyle = "#df4b26";
-        context.lineJoin = "round";
-        context.lineWidth = 5;
-                  
-        for(var i=0; i < this.clickX.length; i++) {		
-          context.beginPath();
-          if(this.clickDrag[i] && i){
-            context.moveTo(this.clickX[i-1], this.clickY[i-1]);
-           }else{
-             context.moveTo(this.clickX[i]-1, this.clickY[i]);
-           }
-           context.lineTo(this.clickX[i], this.clickY[i]);
-           context.closePath();
-           context.stroke();
-        }
-      }
+        this._clickX.forEach((clickX, i) => {
+            this._canvasContext.beginPath()
+            if(this._clickDrag[i] && i){
+                this._canvasContext.moveTo(this._clickX[i-1], this._clickY[i-1])
+            } else {
+                this._canvasContext.moveTo(this._clickX[i]-1, this._clickY[i])
+            }
+            this._canvasContext.lineTo(this._clickX[i], this._clickY[i])
+            this._canvasContext.closePath()
+            this._canvasContext.stroke()
+        })
+    }
 }
 
 export interface ICanvasManager {
     init(id: string, width?: string, height?: string): HTMLCanvasElement
     getCanvas(): CanvasRenderingContext2D
+    setStrokeSize(size: number): void
+    setStrokeStyle(color: string): void
+    setStrokeJoinShape(shape: CanvasLineJoin): void
 }
