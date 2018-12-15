@@ -5,3 +5,5 @@
 - npm install
 - npm run build
 - open index.html in root dir
+  
+  by: Mike Brajkovich
