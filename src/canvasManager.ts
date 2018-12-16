@@ -89,6 +89,17 @@ export class CanvasManager implements ICanvasManager {
             }
         })
 
+        canvasDiv.addEventListener("touchstart", function (ev) {
+            ev.preventDefault();
+            ev.stopPropagation();
+            var touch = ev.touches[0];
+            var mouseEvent = new MouseEvent("mousedown", {
+              clientX: touch.clientX,
+              clientY: touch.clientY
+            });
+            canvasDiv.dispatchEvent(mouseEvent);
+          }, false);
+
         canvasDiv.addEventListener("touchmove", function (ev) {
             ev.preventDefault();
             ev.stopPropagation();
