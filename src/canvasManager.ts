@@ -88,6 +88,17 @@ export class CanvasManager implements ICanvasManager {
                 this.redraw()
             }
         })
+
+        canvasDiv.addEventListener("touchmove", function (ev) {
+            ev.preventDefault();
+            ev.stopPropagation();
+            var touch = ev.touches[0];
+            var mouseEvent = new MouseEvent("mousemove", {
+              clientX: touch.clientX,
+              clientY: touch.clientY
+            });
+            canvasDiv.dispatchEvent(mouseEvent);
+          }, false);
     }
 
     private addClick(x: number, y: number, dragging?: boolean) {
