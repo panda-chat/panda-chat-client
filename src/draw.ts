@@ -1,10 +1,14 @@
 import { CanvasManager } from "./canvasManager"
 import { LogManager } from "./logManager";
+import * as AColorPicker from "../node_modules/a-color-picker/dist/acolorpicker" 
 
 let canvasManager: CanvasManager = new CanvasManager
 const canvasElement: HTMLCanvasElement = canvasManager.init('canvas')
 const canvas: CanvasRenderingContext2D = canvasManager.getCanvas()
 const logManager: LogManager = new LogManager
+AColorPicker.from('div.container')[0].on('change', (p, c) => {
+    canvasManager.setStrokeStyle(c)
+})
 
 //todo this file is the main file in the app and a playground for testing
 //as tested code works we need to move it into an appropriate manager
