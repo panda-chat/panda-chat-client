@@ -6,14 +6,29 @@ const STROKE_COLOR: string = "#DF4B26"
 const STROKE_JOIN: CanvasLineJoin = "round"
 const STROKE_WIDTH: number = 5
 
+class CanvasClick {
+    public x_pos: number
+    public y_pos: number
+    public dragging: boolean
+    public color: string
+
+    constructor(x_pos: number, y_pos: number, dragging: boolean, color: string) {
+        this.x_pos = x_pos
+        this.y_pos = y_pos
+        this.dragging = dragging
+        this.color = color
+    }
+}
+
 export class CanvasManager implements ICanvasManager {
     private _canvasContext: CanvasRenderingContext2D
     private _logManager: ILogManager
     private _document: Document
-    private _clickX: number[] = new Array()
-    private _clickY: number[] = new Array()
-    private _clickDrag: boolean[] = new Array()
+
+    //canvas drawing variables
+    private _canvasClicks: CanvasClick[] = new Array()
     private _painting: boolean
+    private _currentStrokeColor: string
 
     constructor() {
         this._logManager = new LogManager
@@ -38,7 +53,7 @@ export class CanvasManager implements ICanvasManager {
         canvasDiv.appendChild(canvasElement)
 
         this._canvasContext = canvasElement.getContext("2d")
-        this._canvasContext.strokeStyle = STROKE_COLOR
+        this._currentStrokeColor = STROKE_COLOR
         this._canvasContext.lineJoin = STROKE_JOIN
         this._canvasContext.lineWidth = STROKE_WIDTH
 
@@ -56,11 +71,16 @@ export class CanvasManager implements ICanvasManager {
 
     //todo: stroke style can take more than a color
     public setStrokeStyle(color: string): void {
-        this._canvasContext.strokeStyle = color
+        this._currentStrokeColor = color
     }
 
     public setStrokeJoinShape(canvasLineJoin: CanvasLineJoin): void {
         this._canvasContext.lineJoin = canvasLineJoin
+    }
+
+    public eraseCanvas(): void {
+        this._canvasContext.clearRect(0, 0, this._canvasContext.canvas.width, this._canvasContext.canvas.height)
+        this._canvasClicks = new Array()
     }
 
     private addEventListeners(canvasDiv:HTMLElement) {
@@ -112,25 +132,32 @@ export class CanvasManager implements ICanvasManager {
           }, false);
     }
 
-    private addClick(x: number, y: number, dragging?: boolean) {
-        this._clickX.push(x)
-        this._clickY.push(y)
-        this._clickDrag.push(dragging ? true : false)
+    private addClick(x: number, y: number, dragging?: boolean): void {
+        this._canvasClicks.push(
+            new CanvasClick(x, y, dragging ? true : false, this._currentStrokeColor)
+        )
     }
 
-    //todo what do we need to redraw for? Examples show this but its currently working without this. Doin me a confuse
-    private redraw(){
-        //this._canvasContext.clearRect(0, 0, this._canvasContext.canvas.width, this._canvasContext.canvas.height)
+    //todo dont redraw the entire thing evry tim
+    private redraw(): void{
+        this._canvasContext.clearRect(0, 0, this._canvasContext.canvas.width, this._canvasContext.canvas.height)
         
-        this._clickX.forEach((clickX, i) => {
+        this._canvasClicks.forEach((canvasClick, i) => {
+            const x_pos = canvasClick.x_pos
+            const y_pos = canvasClick.y_pos
+            const dragging = canvasClick.dragging
+            const prevClick = this._canvasClicks[i-1]
+
             this._canvasContext.beginPath()
-            if(this._clickDrag[i] && i){
-                this._canvasContext.moveTo(this._clickX[i-1], this._clickY[i-1])
+            if(dragging && i){
+                this._canvasContext.moveTo(prevClick.x_pos, prevClick.y_pos)
             } else {
-                this._canvasContext.moveTo(this._clickX[i]-1, this._clickY[i])
+                this._canvasContext.moveTo(x_pos-1, y_pos)
             }
-            this._canvasContext.lineTo(this._clickX[i], this._clickY[i])
+
+            this._canvasContext.lineTo(x_pos, y_pos)
             this._canvasContext.closePath()
+            this._canvasContext.strokeStyle = canvasClick.color
             this._canvasContext.stroke()
         })
     }

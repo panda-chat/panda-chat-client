@@ -34,12 +34,12 @@ function removeDragData(ev: DragEvent) {
     }
 }
 
-document.getElementById('printimg').addEventListener('click', () => {
-    img()
-})
-
 document.getElementById('downimg').addEventListener('click', () => {
     downimg()
+})
+
+document.getElementById('erase-canvas').addEventListener('click', () => {
+    canvasManager.eraseCanvas()
 })
 
 document.getElementById('drop-zone').addEventListener('drop', (ev) => {
