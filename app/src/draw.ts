@@ -11,6 +11,9 @@ AColorPicker.from('div.container')[0].on('change', (p, c) => {
     canvasManager.setStrokeStyle(c)
 })
 
+//todo change the way this works so we dont have to keep the stroke size here
+let currentWidth: number = 5
+
 //todo this file is the main file in the app and a playground for testing
 //as tested code works we need to move it into an appropriate manager
 function img(src?: string) {
@@ -18,8 +21,8 @@ function img(src?: string) {
     drawimg.setAttribute('src', src ? src : canvasElement.toDataURL('image/png'))
 }
 
-function downimg() {
-    const downimg = document.getElementById('downimg')
+function downloadImage() {
+    const downimg = document.getElementById('download-image')
     var durl = canvasElement.toDataURL('image/png')
     downimg.setAttribute('href', durl)   
 }
@@ -34,18 +37,39 @@ function removeDragData(ev: DragEvent) {
     }
 }
 
-document.getElementById('downimg').addEventListener('click', () => {
-    downimg()
+document.getElementById('download-image').addEventListener('click', () => {
+    downloadImage()
 })
 
 document.getElementById('erase-canvas').addEventListener('click', () => {
     canvasManager.eraseCanvas()
 })
 
-document.getElementById('drop-zone').addEventListener('drop', (ev) => {
+document.querySelectorAll('.stroke-size').forEach((elem) => {
+    elem.addEventListener('click', (e) => {
+       const target = e.target as Element
+       const type = target.getAttribute('attr-type')
+       if(type === "up") {
+           currentWidth++
+           if(currentWidth > 20){
+               currentWidth = 10
+           }
+           canvasManager.setStrokeSize(currentWidth)
+       }
+       else if(type === "down") {
+            currentWidth--
+            if(currentWidth < 1){
+                currentWidth = 1
+            }
+            canvasManager.setStrokeSize(currentWidth)
+       }
+    })
+})
+
+document.getElementById('canvas').addEventListener('drop', (ev) => {
     ev.stopPropagation()
     ev.preventDefault()
-
+    canvasManager.eraseCanvas()
     //todo POC
     const droppedFile = ev.dataTransfer.items[0].getAsFile()
     var image = new Image()
@@ -56,23 +80,19 @@ document.getElementById('drop-zone').addEventListener('drop', (ev) => {
     image.src = URL.createObjectURL(droppedFile)
 }, false)
 
-document.getElementById('drop-zone').addEventListener('dragdrop', (ev) => {
+document.getElementById('canvas').addEventListener('dragdrop', (ev) => {
     ev.stopPropagation()
     ev.preventDefault()
-    alert('dropped')
 }, false)
 
-document.getElementById('drop-zone').addEventListener('dragenter', (ev) => {
+document.getElementById('canvas').addEventListener('dragenter', (ev) => {
     ev.preventDefault();
-    window.console.log('enter')
 })
 
-document.getElementById('drop-zone').addEventListener('dragover', (ev) => {
+document.getElementById('canvas').addEventListener('dragover', (ev) => {
     ev.preventDefault();
-    window.console.log('over')
 })
 
-document.getElementById('drop-zone').addEventListener('dragleave', (ev) => {
+document.getElementById('canvas').addEventListener('dragleave', (ev) => {
     ev.preventDefault();
-    window.console.log('leave')
 })

@@ -11,12 +11,16 @@ class CanvasClick {
     public y_pos: number
     public dragging: boolean
     public color: string
+    public shape: CanvasLineJoin
+    public width: number
 
-    constructor(x_pos: number, y_pos: number, dragging: boolean, color: string) {
+    constructor(x_pos: number, y_pos: number, dragging: boolean, color: string, shape: CanvasLineJoin, width: number) {
         this.x_pos = x_pos
         this.y_pos = y_pos
         this.dragging = dragging
         this.color = color
+        this.shape = shape
+        this.width = width
     }
 }
 
@@ -29,6 +33,8 @@ export class CanvasManager implements ICanvasManager {
     private _canvasClicks: CanvasClick[] = new Array()
     private _painting: boolean
     private _currentStrokeColor: string
+    private _currentStrokeWidth: number
+    private _currentStrokeJoin: CanvasLineJoin
 
     constructor() {
         this._logManager = new LogManager
@@ -54,8 +60,8 @@ export class CanvasManager implements ICanvasManager {
 
         this._canvasContext = canvasElement.getContext("2d")
         this._currentStrokeColor = STROKE_COLOR
-        this._canvasContext.lineJoin = STROKE_JOIN
-        this._canvasContext.lineWidth = STROKE_WIDTH
+        this._currentStrokeJoin = STROKE_JOIN
+        this._currentStrokeWidth = STROKE_WIDTH
 
         this.addEventListeners(canvasDiv)
         return canvasElement
@@ -66,7 +72,7 @@ export class CanvasManager implements ICanvasManager {
     }
 
     public setStrokeSize(size: number): void {
-        this._canvasContext.lineWidth = size
+        this._currentStrokeWidth = size
     }
 
     //todo: stroke style can take more than a color
@@ -75,7 +81,7 @@ export class CanvasManager implements ICanvasManager {
     }
 
     public setStrokeJoinShape(canvasLineJoin: CanvasLineJoin): void {
-        this._canvasContext.lineJoin = canvasLineJoin
+        this._currentStrokeJoin = canvasLineJoin
     }
 
     public eraseCanvas(): void {
@@ -134,13 +140,13 @@ export class CanvasManager implements ICanvasManager {
 
     private addClick(x: number, y: number, dragging?: boolean): void {
         this._canvasClicks.push(
-            new CanvasClick(x, y, dragging ? true : false, this._currentStrokeColor)
+            new CanvasClick(x, y, dragging ? true : false, this._currentStrokeColor, this._currentStrokeJoin, this._currentStrokeWidth)
         )
     }
 
     //todo dont redraw the entire thing evry tim
     private redraw(): void{
-        this._canvasContext.clearRect(0, 0, this._canvasContext.canvas.width, this._canvasContext.canvas.height)
+        //this._canvasContext.clearRect(0, 0, this._canvasContext.canvas.width, this._canvasContext.canvas.height)
         
         this._canvasClicks.forEach((canvasClick, i) => {
             const x_pos = canvasClick.x_pos
@@ -158,6 +164,8 @@ export class CanvasManager implements ICanvasManager {
             this._canvasContext.lineTo(x_pos, y_pos)
             this._canvasContext.closePath()
             this._canvasContext.strokeStyle = canvasClick.color
+            this._canvasContext.lineWidth = canvasClick.width
+            this._canvasContext.lineJoin = canvasClick.shape
             this._canvasContext.stroke()
         })
     }
