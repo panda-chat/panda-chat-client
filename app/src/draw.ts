@@ -1,8 +1,9 @@
 import { CanvasManager } from "./canvasManager"
 import { LogManager } from "./logManager";
-import * as AColorPicker from "../node_modules/a-color-picker/dist/acolorpicker" 
+import * as AColorPicker from "../../node_modules/a-color-picker/dist/acolorpicker"
+import '../site.scss';
 
-let canvasManager: CanvasManager = new CanvasManager
+let canvasManager: CanvasManager = new CanvasManager();
 const canvasElement: HTMLCanvasElement = canvasManager.init('canvas')
 const canvas: CanvasRenderingContext2D = canvasManager.getCanvas()
 const logManager: LogManager = new LogManager
