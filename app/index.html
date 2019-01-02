@@ -3,19 +3,26 @@
         <title>draw</title>
     </head>
     <body>
-        <div class="container" 
-             acp-color="#DF4B26"
-             acp-show-hsl="no"
-             acp-show-rgb="no"
-             acp-show-hex="no"
-             acp-show-alpha="no"></div>
-        <div>
-            <button class="stroke-modifiers stroke-size" attr-type="up">+</button>
-            <button class="stroke-modifiers stroke-size" attr-type="down">-</button>
+        <div style="width:49%;display: inline-block">
+            <div class="container" 
+                acp-color="#DF4B26"
+                acp-show-hsl="no"
+                acp-show-rgb="no"
+                acp-show-hex="no"
+                acp-show-alpha="no"></div>
+            <div>
+                <button class="stroke-modifiers stroke-size" attr-type="up">+</button>
+                <button class="stroke-modifiers stroke-size" attr-type="down">-</button>
+            </div>
+            <div id="canvas"></div>
+            <a id="download-image" download="UMemeBlasted.png">Download</a>
+            <button id="erase-canvas">Clear Canvas</button>
         </div>
-        <div id="canvas"></div>
-        <a id="download-image" download="UMemeBlasted.png">Download</a>
-        <button id="erase-canvas">Clear Canvas</button>
+        <div id="chat-area" style="width:50%;display: inline-block">
+            <div id="messages"></div>
+            <img id="image-box"></img>
+            <textarea id="message-box"></textarea>
+        </div>
     </body>
     <script src="./dist/bundle.js"></script>
 </html>
