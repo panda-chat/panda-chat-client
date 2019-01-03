@@ -1,7 +1,7 @@
 import { LogManager, ILogManager } from "./logManager"
 
 const WIDTH: string = "600px"
-const HEIGHT: string = "600px"
+const HEIGHT: string = "500px"
 const STROKE_COLOR: string = "#DF4B26"
 const STROKE_JOIN: CanvasLineJoin = "round"
 const STROKE_WIDTH: number = 5
