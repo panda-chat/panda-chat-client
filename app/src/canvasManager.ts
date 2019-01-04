@@ -1,7 +1,5 @@
 import { LogManager, ILogManager } from "./logManager"
 
-const WIDTH: string = "600px"
-const HEIGHT: string = "500px"
 const STROKE_COLOR: string = "#DF4B26"
 const STROKE_JOIN: CanvasLineJoin = "round"
 const STROKE_WIDTH: number = 5
@@ -36,6 +34,9 @@ export class CanvasManager implements ICanvasManager {
     private _currentStrokeWidth: number
     private _currentStrokeJoin: CanvasLineJoin
 
+    private canvas_width: number
+    private canvas_height: number
+
     constructor() {
         this._logManager = new LogManager
         this._document = document
@@ -54,8 +55,14 @@ export class CanvasManager implements ICanvasManager {
             return
         }
 
-        canvasElement.setAttribute('width', width ? width : WIDTH)
-        canvasElement.setAttribute('height', height ? height : HEIGHT)
+        window.addEventListener('resize', (ev) => {
+            this.canvas_width = canvasDiv.offsetWidth
+            this.canvas_height = this.canvas_width > 500 ? 500 : this.canvas_width
+            canvasElement.setAttribute('width', this.canvas_width + 'px')
+            canvasElement.setAttribute('height', this.canvas_height + 'px')
+        })
+        window.dispatchEvent(new Event('resize'))
+
         canvasDiv.appendChild(canvasElement)
 
         this._canvasContext = canvasElement.getContext("2d")
@@ -90,7 +97,6 @@ export class CanvasManager implements ICanvasManager {
     }
 
     private addEventListeners(canvasDiv:HTMLElement) {
-        
         canvasDiv.addEventListener('mousedown', (ev) => {
             var mouseX = ev.pageX - canvasDiv.offsetLeft
             var mouseY = ev.pageY - canvasDiv.offsetTop
