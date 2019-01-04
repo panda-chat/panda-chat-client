@@ -13,7 +13,7 @@ export class ChatManager {
     constructor() {
         this._logManager = new LogManager
         this._request = new XMLHttpRequest
-        this._socket = new WebSocket("ws://api." + window.location.host + "/ws/")
+        this._socket = new WebSocket("wss://api." + window.location.host + "/ws/")
     }
 
     public init() {
