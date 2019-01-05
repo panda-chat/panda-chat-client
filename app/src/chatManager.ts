@@ -6,14 +6,14 @@ export class ChatManager {
     private _scrolledToBottom: boolean
     private _logManager: LogManager
     private _request: XMLHttpRequest
-    private _socket: WebSocket
+    private _socket: WebSocket = null;
     private _messages: any
     private _img_blob: Blob
     
     constructor() {
         this._logManager = new LogManager
         this._request = new XMLHttpRequest
-        this._socket = new WebSocket("wss://api." + window.location.host + "/ws/")
+        this._socket = window.location.host ? new WebSocket("wss://api." + window.location.host + "/ws/") : null
     }
 
     public init() {
@@ -22,13 +22,16 @@ export class ChatManager {
             this._scrolledToBottom = (this._messages.scrollTop + this._messages.clientHeight + SCROLL_TOLERANCE) >= this._messages.scrollHeight
         })
 
+        //todo please reformat me please
         this.startChat()
 
-        this._socket.onmessage = (event) => {
-            this.addTextNode(JSON.parse(event.data))
-        }
-        this._socket.onclose = (event) => {
-            this.checkSocket()
+        if(this._socket){
+            this._socket.onmessage = (event) => {
+                this.addTextNode(JSON.parse(event.data))
+            }
+            this._socket.onclose = (event) => {
+                this.checkSocket()
+            }
         }
 
         setInterval(this.checkSocket, 5000)
@@ -59,12 +62,13 @@ export class ChatManager {
         }
     }
 
-    public sendMessage() {
-        return "2"
-    }
-
     public getMessageHistory(numberOfMessages: number) {
         return "1"
+    }
+
+    public sendImageBlob(blob: Blob) {
+        this._img_blob = blob;
+        this.sendMessage(true)
     }
 
     private checkSocket() {
@@ -74,9 +78,11 @@ export class ChatManager {
     }
 
     private startChat() {
-        this._request.onreadystatechange = () => this.onReadyState()
-        this._request.open("GET", "{% url 'messages' %}?quantity=50", false)
-        this._request.send()
+        if (this._socket && this._socket.readyState !== WebSocket.CLOSED) {
+            this._request.onreadystatechange = () => this.onReadyState()
+            this._request.open("GET", "{% url 'messages' %}?quantity=50", false)
+            this._request.send()
+        }
     }
 
     private onReadyState() {
@@ -124,25 +130,29 @@ export class ChatManager {
     private onMessageKeyPress(e: KeyboardEvent) {
         let key = e.keyCode
         if (key == 13) {
-            let msg = (<HTMLInputElement>document.getElementById("message-box")).value
-            if (msg) {
-                this._socket.send(msg);
-                (<HTMLInputElement>document.getElementById("message-box")).value = ''
-            }
-            if (this._img_blob != null) {
-                this._socket.send(this._img_blob)
-                document.getElementById("image-box").setAttribute('src', '')
-                this._img_blob = null
-            }
+            this.sendMessage(false)
             return false
         } else {
             return true
+        }
+    }
+
+    private sendMessage(ignoreMessage?: boolean) {
+        let msg = (<HTMLInputElement>document.getElementById("message-box")).value
+        if (msg && !ignoreMessage) {
+            this._socket.send(msg);
+            (<HTMLInputElement>document.getElementById("message-box")).value = ''
+        }
+        if (this._img_blob != null) {
+            this._socket.send(this._img_blob)
+            document.getElementById("image-box").setAttribute('src', '')
+            this._img_blob = null
         }
     }
 }
 
 export interface IChatManager {
     init(): void
-    sendMessage(): void
-    getMessageHistory(numberOfMessages: number): void
+    //sendMessage(): void
+    //getMessageHistory(numberOfMessages: number): void
 }

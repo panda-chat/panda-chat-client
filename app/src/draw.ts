@@ -49,6 +49,12 @@ document.getElementById('erase-canvas').addEventListener('click', () => {
     canvasManager.eraseCanvas()
 })
 
+document.getElementById('send-canvas').addEventListener('click', () => {
+    var durl = canvasElement.toBlob((b) =>{ 
+        chatManager.sendImageBlob(b)
+     })
+})
+
 document.querySelectorAll('.stroke-size').forEach((elem) => {
     elem.addEventListener('click', (e) => {
        const target = e.target as Element
