@@ -80,7 +80,7 @@ export class ChatManager {
     private startChat() {
         if (this._socket && this._socket.readyState !== WebSocket.CLOSED) {
             this._request.onreadystatechange = () => this.onReadyState()
-            this._request.open("GET", "https://www.api." + window.location.host + "/messages/?quantity=100", false)
+            this._request.open("GET", "https://api." + window.location.host + "/messages/?quantity=100", false)
             this._request.send()
         }
     }
