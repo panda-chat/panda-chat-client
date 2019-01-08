@@ -34,7 +34,7 @@ export class ChatManager {
             }
         }
 
-        setInterval(this.checkSocket, 5000)
+        setInterval(() => {this.checkSocket()}, 5000)
 
         document.getElementById('message-box').onkeypress = (e) => this.onMessageKeyPress(e)
 
@@ -80,7 +80,7 @@ export class ChatManager {
     private startChat() {
         if (this._socket && this._socket.readyState !== WebSocket.CLOSED) {
             this._request.onreadystatechange = () => this.onReadyState()
-            this._request.open("GET", "{% url 'messages' %}?quantity=50", false)
+            this._request.open("GET", "api." + window.location.host + "/messages/?quantity=100", false)
             this._request.send()
         }
     }
@@ -121,7 +121,7 @@ export class ChatManager {
             this._messages.appendChild(node)
         }
         if (this._scrolledToBottom) { // Keep scrolled to the bottom if it already is.
-            setTimeout(function() {
+            setTimeout(() => {
                 this._messages.scrollTop = this._messages.scrollHeight - this._messages.clientHeight
             }, 20)
         }
