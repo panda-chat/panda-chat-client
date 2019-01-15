@@ -56,7 +56,8 @@ export class CanvasManager implements ICanvasManager {
         }
 
         window.addEventListener('resize', (ev) => {
-            this.canvas_width = canvasDiv.offsetWidth
+            var cs = window.getComputedStyle(canvasDiv);
+            this.canvas_width = canvasDiv.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight)
             this.canvas_height = this.canvas_width > 500 ? 500 : this.canvas_width
             canvasElement.setAttribute('width', this.canvas_width + 'px')
             canvasElement.setAttribute('height', this.canvas_height + 'px')
