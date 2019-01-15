@@ -5,33 +5,52 @@
     <body>
         <div id="app">
             <div id="chat-container">
-                <div id="message-history-container"></div>
+                <div id="chat-container-message-history"></div>
                 
-                <div id="message-textarea-container">
-                    <textarea id="message-textarea" placeholder="..."></textarea>
+                <div id="chat-container-controls">
+                    <textarea id="chat-container-textarea" placeholder="..."></textarea>
+                    <button id="chat-container-send-button">Send</button>
                 </div>
             </div>
             <div id="drawing-container">
-                <div id="canvas"></div>
-                <div class="color-picker" 
-                    acp-color="#DF4B26"
-                    acp-show-hsl="no"
-                    acp-show-rgb="no"
-                    acp-show-hex="no"
-                    acp-show-alpha="no">
+                <div id="drawing-container-controls">
+                    <div id="canvas"></div>
+                    <button>
+                        <a class="fas fa-download" id="download-image" download="UMemeBlasted.png"></a>
+                    </button>
+                    <button>
+                        <i id="erase-canvas" class="fas fa-trash-alt"></i>
+                    </button>
+                    <button>
+                        <i id="init-canvas" class="fas fa-pencil-alt"></i>
+                    </button>
+                    <button>
+                        <i class="fas fa-undo" onlick="alert('not implemented yet');"></i>
+                    </button>
+                    <button>
+                        <i class="fas fa-redo"></i>
+                    </button>
+                    <button>
+                        <i id="send-canvas" class="fas fa-share-square"></i>
+                    </button>
+                    <button>
+                        <i class="fas fa-plus-circle stroke-modifiers stroke-size" attr-type="up"></i>
+                    </button>
+                    <button>
+                        <i class="fas fa-minus-circle stroke-modifiers stroke-size" attr-type="down"></i>
+                    </button>
+                    <button>
+                        <i class="far fa-angry"></i>
+                    </button>
+                    <br />
+                    <div class="drawing-container-color-picker" 
+                        acp-color="#DF4B26"
+                        acp-show-hsl="no"
+                        acp-show-rgb="no"
+                        acp-show-hex="no"
+                        acp-show-alpha="no">
+                    </div>
                 </div>
-                <i class="fas fa-download">
-                    <a id="download-image" download="UMemeBlasted.png"></a>
-                </i>
-                <i id="erase-canvas" class="fas fa-trash-alt"></i>
-                <i id="send-canvas" class="fas fa-pencil-alt"></i>
-                
-                <i class="fas fa-undo"></i>
-                <i class="fas fa-redo"></i>
-                <i class="fas fa-share-square"></i>
-                <i class="fas fa-plus-circle stroke-modifiers stroke-size" attr-type="up"></i>
-                <i class="fas fa-minus-circle stroke-modifiers stroke-size" attr-type="down"></i>
-                <i class="far fa-angry"></i>
             </div>
         </div>
     </body>

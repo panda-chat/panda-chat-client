@@ -11,7 +11,7 @@ const logManager: LogManager = new LogManager
 const chatManager: ChatManager = new ChatManager();
 chatManager.init();
 
-AColorPicker.from('div.container')[0].on('change', (p, c) => {
+AColorPicker.from('div.drawing-container-color-picker')[0].on('change', (p, c) => {
     canvasManager.setStrokeStyle(c)
 })
 
@@ -62,7 +62,7 @@ document.querySelectorAll('.stroke-size').forEach((elem) => {
        if(type === "up") {
            currentWidth++
            if(currentWidth > 20){
-               currentWidth = 10
+               currentWidth = 20
            }
            canvasManager.setStrokeSize(currentWidth)
        }
