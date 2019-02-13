@@ -3,7 +3,7 @@ import { LogManager } from "./logManager";
 const SCROLL_TOLERANCE = 20
 
 export class ChatManager {
-    private _scrolledToBottom: boolean
+    private _scrolledToBottom: boolean = true;
     private _logManager: LogManager
     private _request: XMLHttpRequest
     private _socket: WebSocket = null;
