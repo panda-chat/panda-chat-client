@@ -11,7 +11,7 @@ const logManager: LogManager = new LogManager
 const chatManager: ChatManager = new ChatManager();
 chatManager.init();
 
-AColorPicker.from('div.container')[0].on('change', (p, c) => {
+AColorPicker.from('div.drawing-container-color-picker')[0].on('change', (p, c) => {
     canvasManager.setStrokeStyle(c)
 })
 
@@ -46,6 +46,7 @@ document.getElementById('download-image').addEventListener('click', () => {
 })
 
 document.getElementById('erase-canvas').addEventListener('click', () => {
+    window.console.log('erase');
     canvasManager.eraseCanvas()
 })
 
@@ -55,6 +56,11 @@ document.getElementById('send-canvas').addEventListener('click', () => {
      })
 })
 
+document.getElementById('drawing-container-controls-undo').addEventListener('click', () => {
+    window.console.log("undo");
+    canvasManager.undo();
+})
+
 document.querySelectorAll('.stroke-size').forEach((elem) => {
     elem.addEventListener('click', (e) => {
        const target = e.target as Element
@@ -62,7 +68,7 @@ document.querySelectorAll('.stroke-size').forEach((elem) => {
        if(type === "up") {
            currentWidth++
            if(currentWidth > 20){
-               currentWidth = 10
+               currentWidth = 20
            }
            canvasManager.setStrokeSize(currentWidth)
        }

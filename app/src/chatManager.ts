@@ -10,6 +10,9 @@ export class ChatManager {
     private _messages: any
     private _img_blob: Blob
     
+    private _chatContainerTextArea = document.getElementById('chat-container-textarea');
+    private _chatContainerMessageHistory = document.getElementById("chat-container-message-history")
+
     constructor() {
         this._logManager = new LogManager
         this._request = new XMLHttpRequest
@@ -17,7 +20,7 @@ export class ChatManager {
     }
 
     public init() {
-        this._messages = document.getElementById("messages")
+        this._messages = this._chatContainerMessageHistory;
         this._messages.addEventListener("scroll", () => {
             this._scrolledToBottom = (this._messages.scrollTop + this._messages.clientHeight + SCROLL_TOLERANCE) >= this._messages.scrollHeight
         })
@@ -36,11 +39,11 @@ export class ChatManager {
 
         setInterval(() => {this.checkSocket()}, 5000)
 
-        document.getElementById('message-box').onkeypress = (e) => this.onMessageKeyPress(e)
+        this._chatContainerTextArea.onkeypress = (e) => this.onMessageKeyPress(e)
 
         //todo implement this in the image manager
         //Code for copying from clipboard taken from here - https://stackoverflow.com/a/15369753
-        document.getElementById('message-box').onpaste = (event: any) => {
+        this._chatContainerTextArea.onpaste = (event: any) => {
             // use event.originalEvent.clipboard for newer chrome versions
             var items = (event.clipboardData  || event.originalEvent.clipboardData).items;
             // find pasted image among pasted items
@@ -138,10 +141,10 @@ export class ChatManager {
     }
 
     private sendMessage(ignoreMessage?: boolean) {
-        let msg = (<HTMLInputElement>document.getElementById("message-box")).value
+        let msg = (<HTMLInputElement>this._chatContainerTextArea).value
         if (msg && !ignoreMessage) {
             this._socket.send(msg);
-            (<HTMLInputElement>document.getElementById("message-box")).value = ''
+            (<HTMLInputElement>this._chatContainerTextArea).value = ''
         }
         if (this._img_blob != null) {
             this._socket.send(this._img_blob)

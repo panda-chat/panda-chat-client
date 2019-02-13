@@ -56,7 +56,8 @@ export class CanvasManager implements ICanvasManager {
         }
 
         window.addEventListener('resize', (ev) => {
-            this.canvas_width = canvasDiv.offsetWidth
+            var cs = window.getComputedStyle(canvasDiv)
+            this.canvas_width = canvasDiv.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight)
             this.canvas_height = this.canvas_width > 500 ? 500 : this.canvas_width
             canvasElement.setAttribute('width', this.canvas_width + 'px')
             canvasElement.setAttribute('height', this.canvas_height + 'px')
@@ -94,6 +95,12 @@ export class CanvasManager implements ICanvasManager {
     public eraseCanvas(): void {
         this._canvasContext.clearRect(0, 0, this._canvasContext.canvas.width, this._canvasContext.canvas.height)
         this._canvasClicks = new Array()
+        this._canvasContext.beginPath();
+    }
+
+    public undo(): void {
+        this._canvasClicks.pop()
+        this.redraw()
     }
 
     private addEventListeners(canvasDiv:HTMLElement) {
@@ -101,7 +108,7 @@ export class CanvasManager implements ICanvasManager {
             var mouseX = ev.pageX - canvasDiv.offsetLeft
             var mouseY = ev.pageY - canvasDiv.offsetTop
                   
-            this._painting = true;
+            this._painting = true
             this.addClick(mouseX, mouseY)
             this.redraw()
         })
@@ -150,9 +157,8 @@ export class CanvasManager implements ICanvasManager {
         )
     }
 
-    //todo dont redraw the entire thing evry tim
     private redraw(): void{
-        //this._canvasContext.clearRect(0, 0, this._canvasContext.canvas.width, this._canvasContext.canvas.height)
+        this._canvasContext.clearRect(0, 0, this._canvasContext.canvas.width, this._canvasContext.canvas.height)
         
         this._canvasClicks.forEach((canvasClick, i) => {
             const x_pos = canvasClick.x_pos

@@ -1,31 +1,120 @@
-#canvas {
-    width: 100%;
-    border:1px solid red;
+$primary: #17a2b8;
+$secondary: #1c4077;
+$border-color: #5d769a;
+
+*{
+    box-sizing:border-box;
 }
 
-#chat-area {
-    background: #fff;
+body {
+    background-color: #f3f3f5;
+    font-family: 'Roboto', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif
 }
-#message-box {
+
+#app {
     width: 100%;
-    height: 80px;
-    margin: 8px;
-    resize: none;
+    height: 100%;
 }
-#messages {
-    padding: 0 16px;
+
+#chat-container {
+    border: 1px solid $border-color;
+    box-shadow: 0px 0px 5px 0px $secondary;
+    height: 100%;
+    width: 35%;
+    float: left;
+    vertical-align: top;
+    padding: 5px;
+}
+
+#chat-container-message-history {
+    height: 90%;
+    width: 100%;
     overflow-y: scroll;
+    font-size: 15px;
+
+    div {
+        background-color: $primary;
+        border-radius: 6px;
+        padding: 10px;
+        margin-bottom: 15px;
+        color: #fff;
+
+        img {
+            max-width: 250px;
+            height: auto;
+            background-color: #fff;
+        }
+    }
+
+    p {
+        background-color: $primary;
+        border-radius: 6px;
+        padding: 10px;
+        color: #fff;
+    }
 }
-#messages > p {
-    font-family: sans-serif;
-    font-size: 0.8em;
+
+#chat-container-controls {
+    height : 10%;
+    width: 100%;
+
+    #chat-container-textarea {
+        float: left;
+        height: 100%;
+        width: 80%;
+        resize: none;
+    }
+
+    #chat-container-send-button {
+        float: left;
+        width: 20%;
+        height: 100%;
+        color: #fff;
+        background-color: $primary;
+        border-color: $primary;
+    }
 }
-#messages > div > img, #image-box {
-    max-width: 560px;
-    height: auto;
+
+#drawing-container {
+    float: left;
+    height: 100%;
+    width: 65%;
+    vertical-align: top;
+    padding: 0px 10px 0px 10px;
+
+    .far, .fas {
+        font-size: 1.3em;
+    }
+
+    .fa-share-square {
+        transform: scaleX(-1)
+    }
+
+    #drawing-container-controls {
+        height: 100%;
+        width: 80%;
+        vertical-align: top;
+        padding: 0px 10px 0px 10px;
+    }
+
+    #canvas {
+        background-color: #cdcfe0;
+        box-shadow: 0px 0px 5px 0px $secondary;
+        border: 1px solid $border-color;
+
+        canvas {
+            background-color: white;
+        }
+    }
 }
-#image-box {
-    position: absolute;
-    bottom: 96px;
-    right: 20px;
+
+#download-image {
+    color: black;
+    
+    &:visited {
+        color: black;
+    }
+    &:active {
+        color: black;
+    }
 }
