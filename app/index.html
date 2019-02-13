@@ -1,29 +1,60 @@
 <html>
     <head>
-        <title>draw</title>
+        <title>Panda Chat</title>
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     </head>
     <body>
-        <div style="width:49%;display: inline-block">
-            <div class="container" 
-                acp-color="#DF4B26"
-                acp-show-hsl="no"
-                acp-show-rgb="no"
-                acp-show-hex="no"
-                acp-show-alpha="no"></div>
-            <div>
-                <button class="stroke-modifiers stroke-size" attr-type="up">+</button>
-                <button class="stroke-modifiers stroke-size" attr-type="down">-</button>
+        <div id="app">
+            <div id="chat-container">
+                <div id="chat-container-message-history"></div>
+                
+                <div id="chat-container-controls">
+                    <textarea id="chat-container-textarea" placeholder="..."></textarea>
+                    <button id="chat-container-send-button">Send</button>
+                </div>
             </div>
-            <div id="canvas"></div>
-            <a id="download-image" download="UMemeBlasted.png">Download</a>
-            <button id="erase-canvas">Clear Canvas</button>
-            <button id="send-canvas">Send to Chat</button>
-        </div>
-        <div id="chat-area" style="width:50%;display: inline-block">
-            <div id="messages"></div>
-            <img id="image-box"></img>
-            <textarea id="message-box"></textarea>
+            <div id="drawing-container">
+                <div id="drawing-container-controls">
+                    <div id="canvas" ondragstart="return false;" ondrop="return false;"></div>
+                    <button>
+                        <a class="fas fa-download" id="download-image" download="UMemeBlasted.png"></a>
+                    </button>
+                    <button>
+                        <i id="erase-canvas" class="fas fa-trash-alt"></i>
+                    </button>
+                    <button>
+                        <i id="init-canvas" class="fas fa-pencil-alt"></i>
+                    </button>
+                    <button>
+                        <i class="fas fa-undo" id="drawing-container-controls-undo"></i>
+                    </button>
+                    <button>
+                        <i class="fas fa-redo" onclick="alert('some day')"></i>
+                    </button>
+                    <button>
+                        <i id="send-canvas" class="fas fa-share-square"></i>
+                    </button>
+                    <button>
+                        <i class="fas fa-plus-circle stroke-modifiers stroke-size" attr-type="up"></i>
+                    </button>
+                    <button>
+                        <i class="fas fa-minus-circle stroke-modifiers stroke-size" attr-type="down"></i>
+                    </button>
+                    <button>
+                        <i class="far fa-angry"></i>
+                    </button>
+                    <br />
+                    <div class="drawing-container-color-picker" 
+                        acp-color="#DF4B26"
+                        acp-show-hsl="no"
+                        acp-show-rgb="no"
+                        acp-show-hex="no"
+                        acp-show-alpha="no">
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
-    <script src="./dist/bundle.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <script src="dist/bundle.js"></script>
 </html>
