@@ -46,6 +46,7 @@ document.getElementById('download-image').addEventListener('click', () => {
 })
 
 document.getElementById('erase-canvas').addEventListener('click', () => {
+    window.console.log('erase');
     canvasManager.eraseCanvas()
 })
 
@@ -53,6 +54,11 @@ document.getElementById('send-canvas').addEventListener('click', () => {
     var durl = canvasElement.toBlob((b) =>{ 
         chatManager.sendImageBlob(b)
      })
+})
+
+document.getElementById('drawing-container-controls-undo').addEventListener('click', () => {
+    window.console.log("undio");
+    canvasManager.undo();
 })
 
 document.querySelectorAll('.stroke-size').forEach((elem) => {

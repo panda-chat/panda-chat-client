@@ -1,6 +1,7 @@
 <html>
     <head>
         <title>Panda Chat</title>
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     </head>
     <body>
         <div id="app">
@@ -14,7 +15,7 @@
             </div>
             <div id="drawing-container">
                 <div id="drawing-container-controls">
-                    <div id="canvas"></div>
+                    <div id="canvas" ondragstart="return false;" ondrop="return false;"></div>
                     <button>
                         <a class="fas fa-download" id="download-image" download="UMemeBlasted.png"></a>
                     </button>
@@ -25,10 +26,10 @@
                         <i id="init-canvas" class="fas fa-pencil-alt"></i>
                     </button>
                     <button>
-                        <i class="fas fa-undo" onlick="alert('not implemented yet');"></i>
+                        <i class="fas fa-undo" id="drawing-container-controls-undo"></i>
                     </button>
                     <button>
-                        <i class="fas fa-redo"></i>
+                        <i class="fas fa-redo" onclick="alert('some day')"></i>
                     </button>
                     <button>
                         <i id="send-canvas" class="fas fa-share-square"></i>
@@ -55,5 +56,5 @@
         </div>
     </body>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-    <script src="./dist/bundle.js"></script>
+    <script src="/static/bundle.js"></script>
 </html>
