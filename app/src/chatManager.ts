@@ -140,6 +140,10 @@ export class ChatManager {
         }
     }
 
+    public sendChatMessage() {
+        this.sendMessage();
+    }
+
     private sendMessage(ignoreMessage?: boolean) {
         let msg = (<HTMLInputElement>this._chatContainerTextArea).value
         if (msg && !ignoreMessage) {
