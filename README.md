@@ -3,7 +3,6 @@
 - Install Node/npm
 - Clone Repo
 - npm install
-- npm run build
-- open index.html in root dir
-  
-  by: Mike Brajkovich
+- set server details in appsettings.json
+- npm run dev
+- open browser and navigate to localhost:8080
