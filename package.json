@@ -7,17 +7,22 @@
     "test": "echo \"No tests, plz make some\" && exit 1",
     "build": "webpack",
     "watch": "webpack --watch",
-    "dev": "webpack-dev-server"
+    "dev": "webpack-dev-server --inline"
   },
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "autoprefixer": "^9.4.8",
     "copy-webpack-plugin": "^5.0.0",
     "css-loader": "^2.1.0",
     "eslint": "^5.14.1",
+    "file-loader": "^3.0.1",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.5.0",
     "node-sass": "^4.11.0",
+    "postcss-loader": "^3.0.0",
+    "precss": "^4.0.0",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
     "ts-loader": "^5.3.1",

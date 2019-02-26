@@ -85,6 +85,12 @@ export class ChatManager {
             this._request.onreadystatechange = () => this.onReadyState()
             this._request.open("GET", "https://api." + window.location.host + "/messages/?quantity=100", false)
             this._request.send()
+            try{
+                this._request.send()
+            }
+            catch {
+                this._logManager.warn("cannot make connection to messages endpoint");
+            }
         }
     }
 

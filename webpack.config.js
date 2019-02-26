@@ -1,13 +1,19 @@
 const path = require('path');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = {
   mode: 'development',
-  entry: './app/src/draw.ts',
+  entry: ['./app/src/draw.ts', './app/site.scss'],
   devServer: {
-    contentBase: path.join(__dirname, 'dist')
+    contentBase: path.join(__dirname, 'dist'),
+    watchContentBase: true,
+    open: true,
+    publicPath: '/',
+    hot: true
   },
+  watch: true,
   module: {
     rules: [
       {
@@ -17,10 +23,11 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        use: [
-            "style-loader",
-            "css-loader",
-            "sass-loader"
+        use: [ 
+          "style-loader",
+          "css-loader",
+          "postcss-loader",
+          "sass-loader"
         ]
       },
       {
@@ -38,21 +45,22 @@ module.exports = {
       },
     ]
   },
-  resolve: {
-    extensions: [ '.tsx', '.ts', '.js', '.scss' ]
-  },
   plugins: [
+    new CopyWebpackPlugin([
+      {from: './app/robots.txt', to: 'robots.txt'}
+    ]),
     new HtmlWebpackPlugin({
       template: './app/index.html',
       filename: 'index.html',
     }),
-    new CopyWebpackPlugin([
-      {from: './app/robots.txt', to: 'robots.txt'},
-    ])
+    new webpack.HotModuleReplacementPlugin()
   ],
+  resolve: {
+    extensions: ['.ts', '.js', '.scss']
+  },
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: ''
+    publicPath: '/'
   }
 };
