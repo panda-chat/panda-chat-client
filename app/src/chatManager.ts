@@ -68,6 +68,8 @@ export class ChatManager {
                 reader.readAsDataURL(blob);
             }
         }
+
+        this._notificationManager.init()
     }
 
     public sendImageBlob(blob: Blob) {
