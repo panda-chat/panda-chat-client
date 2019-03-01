@@ -1,22 +1,26 @@
-import { LogManager } from "./logManager";
+import { LogManager } from "./logManager"
+import { NotificationManager } from "./notificationManager"
 
 const SCROLL_TOLERANCE = 20
 
 export class ChatManager {
+    private readonly _logManager: LogManager
+    private readonly _notificationManager: NotificationManager;
+    
     private _scrolledToBottom: boolean = true;
-    private _logManager: LogManager
     private _request: XMLHttpRequest
     private _socket: WebSocket = null;
     private _messages: any
-    private _img_blob: Blob
+    private _img_blob: Blob    
     
     private _chatContainerTextArea = document.getElementById('chat-container-textarea');
     private _chatContainerMessageHistory = document.getElementById("chat-container-message-history")
 
     constructor() {
-        this._logManager = new LogManager
-        this._request = new XMLHttpRequest
-        this._socket = window.location.host ? new WebSocket("wss://api." + window.location.host + "/ws/") : null
+        this._notificationManager = new NotificationManager()
+        this._logManager = new LogManager()
+        this._request = new XMLHttpRequest()
+        this._socket = window.location.host ? new WebSocket(`wss://api.${window.location.host}/ws/`) : null
     }
 
     public init() {
@@ -31,6 +35,7 @@ export class ChatManager {
         if(this._socket){
             this._socket.onmessage = (event) => {
                 this.addTextNode(JSON.parse(event.data))
+                this._notificationManager.notify()
             }
             this._socket.onclose = (event) => {
                 this.checkSocket()
