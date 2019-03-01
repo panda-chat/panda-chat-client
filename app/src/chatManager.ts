@@ -65,10 +65,6 @@ export class ChatManager {
         }
     }
 
-    public getMessageHistory(numberOfMessages: number) {
-        return "1"
-    }
-
     public sendImageBlob(blob: Blob) {
         this._img_blob = blob;
         this.sendMessage(true)
