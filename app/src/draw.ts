@@ -1,15 +1,15 @@
 import { CanvasManager } from "./canvasManager"
-import { ChatManager } from "./chatManager";
-import { LogManager } from "./logManager";
+import { ChatManager } from "./chatManager"
+import { LogManager } from "./logManager"
 import * as AColorPicker from "../../node_modules/a-color-picker/dist/acolorpicker"
-import '../site.scss';
+import '../site.scss'
 
-let canvasManager: CanvasManager = new CanvasManager();
+let canvasManager: CanvasManager = new CanvasManager()
 const canvasElement: HTMLCanvasElement = canvasManager.init('canvas')
 const canvas: CanvasRenderingContext2D = canvasManager.getCanvas()
 const logManager: LogManager = new LogManager
-const chatManager: ChatManager = new ChatManager();
-chatManager.init();
+const chatManager: ChatManager = new ChatManager()
+chatManager.init()
 
 AColorPicker.from('div.drawing-container-color-picker')[0].on('change', (p, c) => {
     canvasManager.setStrokeStyle(c)
@@ -32,12 +32,12 @@ function downloadImage() {
 }
 
 function removeDragData(ev: DragEvent) {
-    logManager.debug('Removing drag data');
+    logManager.debug('Removing drag data')
   
     if (ev.dataTransfer.items) {
-        ev.dataTransfer.items.clear();
+        ev.dataTransfer.items.clear()
     } else {
-        ev.dataTransfer.clearData();
+        ev.dataTransfer.clearData()
     }
 }
 
@@ -46,7 +46,7 @@ document.getElementById('download-image').addEventListener('click', () => {
 })
 
 document.getElementById('erase-canvas').addEventListener('click', () => {
-    window.console.log('erase');
+    window.console.log('erase')
     canvasManager.eraseCanvas()
 })
 
@@ -57,8 +57,8 @@ document.getElementById('send-canvas').addEventListener('click', () => {
 })
 
 document.getElementById('drawing-container-controls-undo').addEventListener('click', () => {
-    window.console.log("undo");
-    canvasManager.undo();
+    window.console.log("undo")
+    canvasManager.undo()
 })
 
 document.querySelectorAll('.stroke-size').forEach((elem) => {
@@ -102,17 +102,17 @@ document.getElementById('canvas').addEventListener('dragdrop', (ev) => {
 }, false)
 
 document.getElementById('canvas').addEventListener('dragenter', (ev) => {
-    ev.preventDefault();
+    ev.preventDefault()
 })
 
 document.getElementById('canvas').addEventListener('dragover', (ev) => {
-    ev.preventDefault();
+    ev.preventDefault()
 })
 
 document.getElementById('canvas').addEventListener('dragleave', (ev) => {
-    ev.preventDefault();
+    ev.preventDefault()
 })
 
 document.getElementById('chat-container-send-button').addEventListener('click', (ev) => {
-    chatManager.sendChatMessage();
+    chatManager.sendChatMessage()
 })
