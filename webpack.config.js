@@ -13,7 +13,6 @@ module.exports = {
     publicPath: '/',
     hot: true
   },
-  watch: true,
   module: {
     rules: [
       {
