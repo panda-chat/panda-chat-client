@@ -86,7 +86,7 @@ export class ChatManager {
             this._request.onreadystatechange = () => this.onReadyState()
 
             try{
-                this._request.open("GET", `http://api.${window.location.host}/messages/?quantity=100`, false)
+                this._request.open("GET", `https://api.${window.location.host}/messages/?quantity=100`, false)
                 this._request.send()
             }
             catch(e) {
