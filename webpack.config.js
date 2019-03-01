@@ -47,10 +47,10 @@ module.exports = {
   },
   plugins: [
     new CopyWebpackPlugin([
-      {from: './app/robots.txt', to: 'robots.txt'}
+      {from: path.join(__dirname, 'app/robots.txt'), to: 'robots.txt'}
     ]),
     new HtmlWebpackPlugin({
-      template: './app/index.html',
+      template: path.join(__dirname, 'app/index.html'),
       filename: 'index.html',
     }),
     new webpack.HotModuleReplacementPlugin()
