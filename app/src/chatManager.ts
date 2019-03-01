@@ -1,5 +1,6 @@
 import { LogManager } from "./logManager"
 import { NotificationManager } from "./notificationManager"
+import { settings } from "./settings";
 
 const SCROLL_TOLERANCE = 20
 
@@ -20,7 +21,7 @@ export class ChatManager {
         this._notificationManager = new NotificationManager()
         this._logManager = new LogManager()
         this._request = new XMLHttpRequest()
-        this._socket = window.location.host ? new WebSocket(`wss://api.${window.location.host}/ws/`) : null
+        this._socket = window.location.host ? new WebSocket(settings.websocketEndpoint) : null
     }
 
     public init() {
@@ -88,7 +89,7 @@ export class ChatManager {
             this._request.onreadystatechange = () => this.onReadyState()
 
             try{
-                this._request.open("GET", `https://api.${window.location.host}/messages/?quantity=100`, false)
+                this._request.open("GET", settings.messagesEndpoint, false)
                 this._request.send()
             }
             catch(e) {
