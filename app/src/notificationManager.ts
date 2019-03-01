@@ -12,13 +12,13 @@ export class NotificationManager implements INotificationManager{
 
     public init() {
         window.addEventListener("focus", () => {
-            this.markRead();
+            this.markRead()
         })
     }
 
     public notify() {
         if(document.hasFocus()) {
-            this.markRead();
+            this.markRead()
         }
         else {
             this.numberOfUnreadMessages++
@@ -28,7 +28,7 @@ export class NotificationManager implements INotificationManager{
 
     public markRead() {
         this.numberOfUnreadMessages = 0
-        document.title = this._documentTitle;
+        document.title = this._documentTitle
     }
 }
 

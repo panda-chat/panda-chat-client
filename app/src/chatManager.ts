@@ -5,15 +5,15 @@ const SCROLL_TOLERANCE = 20
 
 export class ChatManager {
     private readonly _logManager: LogManager
-    private readonly _notificationManager: NotificationManager;
+    private readonly _notificationManager: NotificationManager
     
-    private _scrolledToBottom: boolean = true;
+    private _scrolledToBottom: boolean = true
     private _request: XMLHttpRequest
-    private _socket: WebSocket = null;
+    private _socket: WebSocket = null
     private _messages: any
     private _img_blob: Blob    
     
-    private _chatContainerTextArea = document.getElementById('chat-container-textarea');
+    private _chatContainerTextArea = document.getElementById('chat-container-textarea')
     private _chatContainerMessageHistory = document.getElementById("chat-container-message-history")
 
     constructor() {
@@ -24,7 +24,7 @@ export class ChatManager {
     }
 
     public init() {
-        this._messages = this._chatContainerMessageHistory;
+        this._messages = this._chatContainerMessageHistory
         this._messages.addEventListener("scroll", () => {
             this._scrolledToBottom = (this._messages.scrollTop + this._messages.clientHeight + SCROLL_TOLERANCE) >= this._messages.scrollHeight
         })
@@ -50,22 +50,22 @@ export class ChatManager {
         //Code for copying from clipboard taken from here - https://stackoverflow.com/a/15369753
         this._chatContainerTextArea.onpaste = (event: any) => {
             // use event.originalEvent.clipboard for newer chrome versions
-            var items = (event.clipboardData  || event.originalEvent.clipboardData).items;
+            var items = (event.clipboardData  || event.originalEvent.clipboardData).items
             // find pasted image among pasted items
-            let blob: Blob = null;
+            let blob: Blob = null
             for (var i = 0; i < items.length; i++) {
                 if (items[i].type.indexOf("image") === 0) {
-                    blob = items[i].getAsFile();
+                    blob = items[i].getAsFile()
                 }
             }
             // load image if there is a pasted image
             if (blob !== null) {
-                var reader = new FileReader();
+                var reader = new FileReader()
                 reader.onload = (event) => {
                     document.getElementById("image-box").setAttribute('src', (<any>event.target).result)
                     this._img_blob = blob
-                };
-                reader.readAsDataURL(blob);
+                }
+                reader.readAsDataURL(blob)
             }
         }
 
@@ -73,7 +73,7 @@ export class ChatManager {
     }
 
     public sendImageBlob(blob: Blob) {
-        this._img_blob = blob;
+        this._img_blob = blob
         this.sendMessage(true)
     }
 
@@ -92,8 +92,8 @@ export class ChatManager {
                 this._request.send()
             }
             catch(e) {
-                this._logManager.warn("cannot make connection to messages endpoint");
-                this._logManager.warn(e);
+                this._logManager.warn("cannot make connection to messages endpoint")
+                this._logManager.warn(e)
             }
         }
     }
@@ -151,14 +151,14 @@ export class ChatManager {
     }
 
     public sendChatMessage() {
-        this.sendMessage();
+        this.sendMessage()
     }
 
     private sendMessage(ignoreMessage?: boolean) {
         let msg = (<HTMLInputElement>this._chatContainerTextArea).value
         if (msg && !ignoreMessage) {
             this._socket.send(msg);
-            (<HTMLInputElement>this._chatContainerTextArea).value = ''
+            (this._chatContainerTextArea as HTMLInputElement).value = ''
         }
         if (this._img_blob != null) {
             this._socket.send(this._img_blob)
@@ -170,6 +170,4 @@ export class ChatManager {
 
 export interface IChatManager {
     init(): void
-    //sendMessage(): void
-    //getMessageHistory(numberOfMessages: number): void
 }
