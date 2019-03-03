@@ -163,7 +163,7 @@ export class ChatManager {
         }
         if (this._img_blob != null) {
             this._socket.send(this._img_blob)
-            document.getElementById("image-box").setAttribute('src', '')
+            //document.getElementById("image-box").setAttribute('src', '')
             this._img_blob = null
         }
     }
