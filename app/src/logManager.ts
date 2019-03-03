@@ -1,23 +1,31 @@
 export class LogManager implements ILogManager{
-    debug(message: string) {
-        this.log(message)
+    debug(message: string, exception?: any) {
+        this.log(message, exception)
     }
 
-    warn(message: string) {
-        this.log(message)
+    warn(message: string, exception?: any) {
+        this.log(message, exception)
     }
 
-    info(message: string) {
-        this.log(message)
+    info(message: string, exception?: any) {
+        this.log(message, exception)
     }
 
-    private log(message: string) {
+    critical(message: string, exception?: any) {
+        this.log(message, exception)
+    }
+
+    private log(message: string, exception?: any) {
         window.console.log(message)
+        if(exception) {
+            window.console.dir(exception)
+        }
     }
 }
 
 export interface ILogManager {
-    debug(message: string): void
-    warn(message: string): void
-    info(message: string): void
+    debug(message: string, exception: any): void
+    warn(message: string, exception: any): void
+    info(message: string, exception: any): void
+    critical(message: string, exception: any): void
 }
