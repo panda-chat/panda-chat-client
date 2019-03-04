@@ -1,21 +1,21 @@
 export class LogManager implements ILogManager{
-    debug(message: string, exception?: any) {
+    debug(message: string, exception?: any | null) {
         this.log(message, exception)
     }
 
-    warn(message: string, exception?: any) {
+    warn(message: string, exception?: any | null) {
         this.log(message, exception)
     }
 
-    info(message: string, exception?: any) {
+    info(message: string, exception?: any | null) {
         this.log(message, exception)
     }
 
-    critical(message: string, exception?: any) {
+    critical(message: string, exception?: any | null) {
         this.log(message, exception)
     }
 
-    private log(message: string, exception?: any) {
+    private log(message: string, exception?: any | null) {
         window.console.log(message)
         if(exception) {
             window.console.dir(exception)
@@ -24,8 +24,8 @@ export class LogManager implements ILogManager{
 }
 
 export interface ILogManager {
-    debug(message: string, exception: any): void
-    warn(message: string, exception: any): void
-    info(message: string, exception: any): void
-    critical(message: string, exception: any): void
+    debug(message: string, exception?: any): void
+    warn(message: string, exception?: any): void
+    info(message: string, exception?: any): void
+    critical(message: string, exception?: any): void
 }

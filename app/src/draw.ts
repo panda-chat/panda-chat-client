@@ -52,7 +52,7 @@ document.getElementById('erase-canvas').addEventListener('click', () => {
 
 document.getElementById('send-canvas').addEventListener('click', () => {
     var durl = canvasElement.toBlob((b) =>{ 
-        chatManager.sendImageBlob(b)
+        //chatManager.sendImageBlob(b)
      })
 })
 
@@ -114,5 +114,5 @@ document.getElementById('canvas').addEventListener('dragleave', (ev) => {
 })
 
 document.getElementById('chat-container-send-button').addEventListener('click', (ev) => {
-    chatManager.sendChatMessage()
+    chatManager.sendChatMessage("this is a test")
 })
