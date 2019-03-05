@@ -1,5 +1,5 @@
 import { LogManager } from "../logManager"
-import { settings } from "../settings"
+declare let settings: any;
 import { HttpService } from "./httpService"
 
 export class MessageHistoryService implements IMessageService {

@@ -1,4 +1,4 @@
-import { settings } from "../settings"
+declare let settings: any;
 import { LogManager } from "../logManager"
 
 export class WebsocketService implements IWebsocketService{
