@@ -5,9 +5,9 @@
   "main": "draw.js",
   "scripts": {
     "test": "echo \"No tests, plz make some\" && exit 1",
-    "build": "webpack",
+    "build": "webpack --mode=production",
     "watch": "webpack --watch",
-    "dev": "webpack-dev-server --inline"
+    "dev": "webpack-dev-server --inline --mode=development"
   },
   "author": "",
   "license": "MIT",
