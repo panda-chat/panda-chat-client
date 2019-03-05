@@ -331,3 +331,6 @@ ASALocalRun/
 
 app/dist/*
 dist/*
+
+# file used for easier multiline commits
+commit_message
