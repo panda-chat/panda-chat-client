@@ -1,5 +1,5 @@
 import { LogManager } from "../logManager"
-declare let settings: any;
+import { MESSAGES_ENDPOINT } from "../settings"
 import { HttpService } from "./httpService"
 
 export class MessageHistoryService implements IMessageService {
@@ -13,7 +13,7 @@ export class MessageHistoryService implements IMessageService {
     }
 
     public async getMessageHistory(numberOfMessages: number) {   
-        return await this._httpService.get(settings.messagesEndpoint)
+        return await this._httpService.get(MESSAGES_ENDPOINT)
     }
 }
 

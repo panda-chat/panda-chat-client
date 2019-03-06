@@ -69,16 +69,16 @@ module.exports = (env, argv) => {
   // Settings for just development.
   if (argv.mode == 'development') {
     exports.plugins.push(new webpack.DefinePlugin({
-      "settings.messagesEndpoint": "'http://localhost:4000/messages/?quantity=100'",
-      "settings.websocketEndpoint": "'ws://localhost:4000/ws/'",
+      "MESSAGES_ENDPOINT": "'http://localhost:4000/messages/?quantity=100'",
+      "WEBSOCKET_ENDPOINT": "'ws://localhost:4000/ws/'",
     }));
   }
 
   // Settings for just production.
   if (argv.mode == 'production') {
     exports.plugins.push(new webpack.DefinePlugin({
-      "settings.messagesEndpoint": "'https://api.pandachat.cc/messages/?quantity=100'",
-      "settings.websocketEndpoint": "'wss://api.pandachat.cc/ws/'",
+      "MESSAGES_ENDPOINT": "'https://api.pandachat.cc/messages/?quantity=100'",
+      "WEBSOCKET_ENDPOINT": "'wss://api.pandachat.cc/ws/'",
     }));
   }
 

@@ -1,4 +1,4 @@
-declare let settings: any;
+import { WEBSOCKET_ENDPOINT } from "../settings"
 import { LogManager } from "../logManager"
 
 export class WebsocketService implements IWebsocketService{
@@ -26,7 +26,7 @@ export class WebsocketService implements IWebsocketService{
 
     private createSocket = (messageHandler: any, errorHandler?: any): void => {
         if (!this._socket || this._socket.readyState != WebSocket.OPEN) {
-            this._socket = new WebSocket(settings.websocketEndpoint)
+            this._socket = new WebSocket(WEBSOCKET_ENDPOINT)
 
             this._socket.onmessage = (ev) => messageHandler(ev)
 
