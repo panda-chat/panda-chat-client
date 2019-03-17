@@ -1,18 +1,18 @@
 import { WEBSOCKET_ENDPOINT } from "../settings"
-import { LogManager } from "../logManager"
+import { LogManager, ILogManager } from "../logManager"
 
 export class WebsocketService implements IWebsocketService{
 
     private _socket: WebSocket
-    private _logManager: LogManager
+    private _logManager: ILogManager
 
     constructor() {
         this._logManager = new LogManager
     }
 
-    //todo types
     public connect = (messageHandler: any, errorHandler?: any): void => {
         this.createSocket(messageHandler, errorHandler)
+        this._logManager.info("Connected to websocket service")
         setInterval(() => {this.createSocket(messageHandler, errorHandler)}, 5000)
     }
 
@@ -27,7 +27,7 @@ export class WebsocketService implements IWebsocketService{
     private createSocket = (messageHandler: any, errorHandler?: any): void => {
         if (!this._socket || this._socket.readyState != WebSocket.OPEN) {
             this._socket = new WebSocket(WEBSOCKET_ENDPOINT)
-
+            this._logManager.debug(`Connecting to ${WEBSOCKET_ENDPOINT}`)
             this._socket.onmessage = (ev) => messageHandler(ev)
 
             this._socket.onerror = errorHandler ? errorHandler : (e) => {
@@ -38,5 +38,6 @@ export class WebsocketService implements IWebsocketService{
 }
 
 export interface IWebsocketService {
-    connect(messageHandler: MessageEvent, errorHandler?: MessageEvent): void
+    connect(messageHandler: any, errorHandler?: any): void
+    sendMessage(message: string): void
 }

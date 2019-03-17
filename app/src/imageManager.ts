@@ -4,6 +4,10 @@ export class ImageManager {
     private _logManager: ILogManager
     private _document: Document
 
+    /* 
+    Image manager is used to capture onpaste events by the user as well as pass around images
+    between the canvas, the chat, and the websocket
+    */
     constructor(){
         this._document = document
     }
@@ -11,8 +15,6 @@ export class ImageManager {
 
 }
 
-
-// this._chatContainerTextArea.onkeypress = (e) => this.onMessageKeyPress(e)
 
 // //todo implement this in the image manager
 // //Code for copying from clipboard taken from here - https://stackoverflow.com/a/15369753

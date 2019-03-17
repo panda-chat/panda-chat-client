@@ -186,6 +186,8 @@ export class CanvasManager implements ICanvasManager {
 export interface ICanvasManager {
     init(id: string, width?: string, height?: string): HTMLCanvasElement
     getCanvas(): CanvasRenderingContext2D
+    eraseCanvas(): void
+    undo(): void
     setStrokeSize(size: number): void
     setStrokeStyle(color: string): void
     setStrokeJoinShape(shape: CanvasLineJoin): void

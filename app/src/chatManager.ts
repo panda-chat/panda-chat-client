@@ -1,91 +1,56 @@
-import { LogManager } from "./logManager"
-import { NotificationManager } from "./notificationManager"
-import { WebsocketService } from "./services/websocketService";
-
-const SCROLL_TOLERANCE = 20
+import { LogManager, ILogManager } from "./logManager"
+import { NotificationManager, INotificationManager } from "./notificationManager"
+import { WebsocketService, IWebsocketService } from "./services/websocketService";
+import { IDomService, DomService } from "./services/domService";
+import { KeyService, IKeyService, KEYS } from "./services/keyService";
 
 export class ChatManager {
-    private readonly _logManager: LogManager
-    private readonly _notificationManager: NotificationManager
-    private readonly _websocketService: WebsocketService
+    private readonly _logManager: ILogManager
+    private readonly _notificationManager: INotificationManager
+    private readonly _websocketService: IWebsocketService
+    private readonly _domService: IDomService
+    private readonly _keypressService: IKeyService
     
-    private _scrolledToBottom: boolean = true
-    private _messagesContainer = document.getElementById("chat-container-message-history")
-    //private _img_blob: Blob   
-    
-    private _chatContainerTextArea = document.getElementById('chat-container-textarea')
+    private _chatContainerTextArea: HTMLInputElement        
+    private _chatContainerSendButton: HTMLElement
 
+    /* 
+    Chat Manager is the orchestrator between the user's interaction with the chat and
+    the websocket service as well as the dom service to display the messages to the user
+    */
     constructor() {
         this._notificationManager = new NotificationManager()
         this._logManager = new LogManager()
         this._websocketService = new WebsocketService()
+        this._keypressService = new KeyService()
+        this._domService = new DomService()
     }
 
     public init() {
-        this._messagesContainer.addEventListener("scroll", () => {
-            this._scrolledToBottom = (this._messagesContainer.scrollTop + this._messagesContainer.clientHeight + SCROLL_TOLERANCE) >= this._messagesContainer.scrollHeight
-        })
+        this._chatContainerTextArea = document.getElementById('chat-container-textarea') as HTMLInputElement
+        this._chatContainerSendButton = document.getElementById('chat-container-send-button')
 
-        this._websocketService.connect((ev: MessageEvent) => this.addTextNode(ev))
+        this._websocketService.connect((ev: MessageEvent) => this._domService.addMessageToContainer(ev))
         this._notificationManager.init()
+
+        this._chatContainerTextArea.onkeypress = (e) => {
+            if (this._keypressService.getKeyPressed(KEYS.ENTER, e)) {
+               this.sendMessage()
+            }
+        }
+
+        this._chatContainerSendButton.addEventListener('click', (ev) => {
+            this.sendMessage()
+        })
     }
-
-    // public sendImageBlob(blob: Blob) {
-    //     this._img_blob = blob
-    //     this.sendMessage(true)
-    // }
-
-    private addTextNode(messageEvent: MessageEvent) {
-        let message = JSON.parse(messageEvent.data)
-        if (message.image) {
-            let node = document.createElement("div")
-            let text_node = document.createTextNode(message.sender + ":")
-            node.appendChild(text_node)
-            let img_node = document.createElement("img")
-            img_node.setAttribute("src", message.image.url)
-            img_node.setAttribute("width", message.image.width)
-            img_node.setAttribute("height", message.image.height)
-            node.appendChild(img_node)
-            this._messagesContainer.appendChild(node)
+    
+    private sendMessage() {
+        let msg = this._chatContainerTextArea.value
+        if (msg) {
+            //send message triggers the websocket event that will write the message to the dom container
+            this._websocketService.sendMessage(msg)
+            this._chatContainerTextArea.value = ''
         }
-        else {
-            let node = document.createElement("p")
-            let text_node = document.createTextNode(message.sender + ": " + message.text)
-            node.appendChild(text_node)
-            this._messagesContainer.appendChild(node)
-        }
-        if (this._scrolledToBottom) { // Keep scrolled to the bottom if it already is.
-            setTimeout(() => {
-                this._messagesContainer.scrollTop = this._messagesContainer.scrollHeight - this._messagesContainer.clientHeight
-            }, 20)
-        }
-    }
-
-    // private onMessageKeyPress(e: KeyboardEvent) {
-    //     let key = e.keyCode
-    //     if (key == 13) {
-    //         this.sendMessage()
-    //         return false
-    //     } else {
-    //         return true
-    //     }
-    // }
-
-    public sendChatMessage(message: string) {
-        this.sendMessage(message)
-    }
-
-    private sendMessage(message: string) {
-        //let msg = (this._chatContainerTextArea as HTMLInputElement).value
-        if (message) {
-            this._websocketService.sendMessage(message);
-            (this._chatContainerTextArea as HTMLInputElement).value = ''
-        }
-        // if (this._img_blob != null) {
-        //     this._socket.send(this._img_blob)
-        //     document.getElementById("image-box").setAttribute('src', '')
-        //     this._img_blob = null
-        // }
     }
 }
 

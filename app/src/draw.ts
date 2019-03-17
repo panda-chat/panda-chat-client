@@ -112,7 +112,3 @@ document.getElementById('canvas').addEventListener('dragover', (ev) => {
 document.getElementById('canvas').addEventListener('dragleave', (ev) => {
     ev.preventDefault()
 })
-
-document.getElementById('chat-container-send-button').addEventListener('click', (ev) => {
-    chatManager.sendChatMessage("this is a test")
-})
