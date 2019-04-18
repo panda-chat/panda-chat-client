@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"No tests, plz make some\" && exit 1",
     "build": "webpack --mode=production",
-    "watch": "webpack --watch",
+    "watch": "webpack --watch --mode=development",
     "dev": "webpack-dev-server --inline --mode=development"
   },
   "author": "",

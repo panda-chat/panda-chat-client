@@ -11,7 +11,7 @@ export class HttpService implements IHttpService {
         return await fetch(url).then((res) => {
             return res
         }).catch((ex) => {
-            this._logManager.critical("error  make connection to messages endpoint", ex)
+            this._logManager.critical("error making connection to messages endpoint", ex)
             return
         })
     }

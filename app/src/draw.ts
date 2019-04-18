@@ -57,7 +57,6 @@ document.getElementById('send-canvas').addEventListener('click', () => {
 })
 
 document.getElementById('drawing-container-controls-undo').addEventListener('click', () => {
-    window.console.log("undo")
     canvasManager.undo()
 })
 
