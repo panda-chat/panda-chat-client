@@ -99,7 +99,8 @@ export class CanvasManager implements ICanvasManager {
     }
 
     public undo(): void {
-        this._canvasClicks.pop()
+        const len = this._canvasClicks.length;
+        this._canvasClicks.splice(len - 3, len)
         this.redraw()
     }
 
