@@ -1,10 +1,6 @@
 export class KeyService implements IKeyService {
     public getKeyPressed(key: KEYS, e: KeyboardEvent): boolean { 
-       if (e.keyCode == key) {            
-            return false
-        } else {
-            return true
-        }
+        return e.keyCode === key
     }
 }
 
